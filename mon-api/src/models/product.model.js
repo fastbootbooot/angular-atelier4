@@ -45,9 +45,9 @@ const findAll = async ({ page = 1, limit = 10, category_id, is_active, search } 
 const findById = async (id) => {
   const [rows] = await pool.query(
     `SELECT p.*, c.name AS category_name
-     FROM products p
-     LEFT JOIN categories c ON p.category_id = c.id
-     WHERE p.id = ?`,
+    FROM products p
+    LEFT JOIN categories c ON p.category_id = c.id
+    WHERE p.id = ?`,
     [id]
   );
   return rows[0] || null;
@@ -59,7 +59,7 @@ const findById = async (id) => {
 const create = async ({ category_id, name, description, price, stock, sku, image_url, is_active }) => {
   const [result] = await pool.query(
     `INSERT INTO products (category_id, name, description, price, stock, sku, image_url, is_active)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [category_id ?? null, name, description ?? null, price, stock ?? 0, sku ?? null, image_url ?? null, is_active ?? 1]
   );
   return findById(result.insertId);

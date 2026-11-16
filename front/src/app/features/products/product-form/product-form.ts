@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ProductService } from '../../../core/services/product.service';
 import { Product } from '../../../core/models/product.model';
+// HNA ZEDNA: Service w Modèle mta3 el Catégories
+import { CategoryService } from '../../../core/services/category.service';
+import { Category } from '../../../core/models/category.model';
 
 @Component({
   selector: 'app-product-form',
@@ -14,9 +17,14 @@ import { Product } from '../../../core/models/product.model';
 })
 export class ProductFormComponent implements OnInit {
   private readonly productService = inject(ProductService);
+  // HNA: Tilifoun mta3 el catégories
+  private readonly categoryService = inject(CategoryService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+
+  // HNA: Signal fih liste des catégories bch n7otouha fil menu déroulant
+  categories = signal<Category[]>([]);
 
   isEdit = signal(false);
   productId = signal<number | null>(null);
@@ -42,6 +50,9 @@ export class ProductFormComponent implements OnInit {
   submitLabel = computed(() => this.isEdit() ? 'Enregistrer les modifications' : 'Créer le produit');
 
   ngOnInit() {
+    // HNA: Awel ma yet7al el formulaire njibou les catégories
+    this.loadCategories();
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEdit.set(true);
@@ -51,6 +62,14 @@ export class ProductFormComponent implements OnInit {
 
     this.form.get('image_url')!.valueChanges.subscribe(val => {
       this.imagePreview.set(val || null);
+    });
+  }
+
+  // HNA: Fonction tjib les catégories mel Backend
+  loadCategories() {
+    this.categoryService.getAll().subscribe({
+      next: (res) => this.categories.set(res.data),
+      error: () => console.error('Erreur de chargement des catégories')
     });
   }
 

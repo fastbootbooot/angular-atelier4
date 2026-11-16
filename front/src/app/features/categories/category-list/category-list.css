@@ -1,0 +1,103 @@
+/* Navbar simple */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+}
+.navbar .brand {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #6366f1;
+  text-decoration: none;
+}
+.navbar .links a {
+  text-decoration: none;
+  color: #64748b;
+  margin-left: 15px;
+  font-weight: 500;
+}
+.navbar .links a.active {
+  color: #6366f1;
+  font-weight: bold;
+}
+
+/* Page Container */
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 0 15px;
+  font-family: inherit;
+}
+
+h2 {
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+/* Formulaire d'ajout */
+.add-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.add-form input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+.add-form button {
+  padding: 10px 20px;
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Tableau simple */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+th, td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  text-align: left;
+}
+th {
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+/* Boutons d'actions */
+.btn-edit {
+  background: #e0e7ff;
+  color: #4338ca;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 6px;
+  font-weight: 500;
+}
+.btn-del {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}

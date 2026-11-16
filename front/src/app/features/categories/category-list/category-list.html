@@ -1,0 +1,55 @@
+<!-- Navbar simple -->
+<nav class="navbar">
+  <a routerLink="/products" class="brand">ShopAdmin</a>
+  <div class="links">
+    <a routerLink="/products">Produits</a>
+    <a routerLink="/categories" class="active">Catégories</a>
+  </div>
+</nav>
+
+<div class="container">
+  <!-- Titre avec le total (Signal Computed) -->
+  <h2>Gestion des Catégories ({{ total() }})</h2>
+
+  <!-- Formulaire d'ajout rapide (input #nomInput + bouton) -->
+  <div class="add-form">
+    <input 
+      #nomInput 
+      type="text" 
+      placeholder="Nom de la catégorie..." 
+      (keyup.enter)="add(nomInput.value); nomInput.value = ''" 
+    />
+    <button (click)="add(nomInput.value); nomInput.value = ''">+ Ajouter</button>
+  </div>
+
+  <!-- Tableau simple -->
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 80px;">ID</th>
+        <th>Nom de la catégorie</th>
+        <th style="width: 180px; text-align: center;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Ydour 3al catégories mte3na -->
+      @for (cat of categories(); track cat.id) {
+        <tr>
+          <td>#{{ cat.id }}</td>
+          <td><strong>{{ cat.name }}</strong></td>
+          <td style="text-align: center;">
+            <button class="btn-edit" (click)="edit(cat)">Modifier</button>
+            <button class="btn-del" (click)="delete(cat)">Supprimer</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="3" style="text-align: center; color: #999;">Aucune catégorie.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Boite de confirmation mta3 el suppression -->
+<app-confirm-dialog #confirmDialog></app-confirm-dialog>

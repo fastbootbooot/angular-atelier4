@@ -7,6 +7,8 @@ const morgan = require('morgan');
 require('./config/db');
 
 const productRoutes = require('./routes/product.routes');
+// HNA: ZEDNA les routes mta3 el catégories elli 5demnehom
+const categoryRoutes = require('./routes/category.routes');
 
 const app = express();
 
@@ -36,6 +38,8 @@ app.get('/health', (req, res) => {
 
 // ── API Routes ─────────────────────────────────────────────────────────────
 app.use('/api/products', productRoutes);
+// HNA: N9olou l Express ay requête tabda b /api/categories 3addiha l categoryRoutes
+app.use('/api/categories', categoryRoutes);
 
 // ── 404 Handler ────────────────────────────────────────────────────────────
 app.use((req, res) => {
