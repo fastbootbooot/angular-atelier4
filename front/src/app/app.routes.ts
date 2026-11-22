@@ -1,5 +1,9 @@
 import { Routes } from '@angular/router';
 
+// ============================================================================
+// PHASE B - Task B.4 : Configuration des Routes (src/app/app.routes.ts)
+// ============================================================================
+
 export const routes: Routes = [
   {
     path: '',
@@ -25,6 +29,12 @@ export const routes: Routes = [
     path: 'products/:id/edit',
     loadComponent: () =>
       import('./features/products/product-form/product-form').then(m => m.ProductFormComponent)
+  },
+  // Task B.4 : Route /categories b Lazy-Loading (Angular ma ychargi el code mte3ha ken ki nenzlou 3al lien)
+  {
+    path: 'categories',
+    loadComponent: () =>
+      import('./features/categories/category-list/category-list').then(m => m.CategoryListComponent)
   },
   {
     path: '**',

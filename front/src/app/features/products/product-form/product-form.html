@@ -8,6 +8,10 @@
     </div>
     <span>ShopAdmin</span>
   </a>
+  <div class="navbar-links">
+    <a routerLink="/products" class="nav-link">Produits</a>
+    <a routerLink="/categories" class="nav-link">Catégories</a>
+  </div>
 </nav>
 
 <div class="page-wrapper">
@@ -93,14 +97,17 @@
 
         <!-- Category ID + SKU -->
         <div class="form-row">
+          <!-- Task B.6 : Menu déroulant dynamique (<select>) fi blaset ra9m brut : l'utilisateur ychouf cat.name w yab3ath cat.id -->
           <div class="form-group">
-            <label class="form-label">ID Catégorie</label>
-            <input
-              type="number"
-              class="form-control"
-              formControlName="category_id"
-              placeholder="Ex: 1"
-            />
+            <label class="form-label">Catégorie</label>
+            <select class="form-control" formControlName="category_id">
+              <!-- Option fergha ken el produit ma 3andouch catégorie -->
+              <option [ngValue]="null">-- Aucune catégorie --</option>
+              <!-- Boucle @for tdour 3al catégories elli 3andna fel base -->
+              @for (cat of categories(); track cat.id) {
+                <option [value]="cat.id">{{ cat.name }}</option>
+              }
+            </select>
           </div>
           <div class="form-group">
             <label class="form-label">SKU</label>
