@@ -1,5 +1,5 @@
 import { Component, signal, computed, inject, OnInit, ViewChild } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../../core/services/product.service';
@@ -16,6 +16,8 @@ import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialo
 export class ProductListComponent implements OnInit {
   private readonly productService = inject(ProductService);
   private readonly router = inject(Router);
+  // 👁️ Feature "Voir Produits" : ActivatedRoute bch na9raw biha el query params (?category_id=X)
+  private readonly route = inject(ActivatedRoute);
   @ViewChild('confirmDialog') confirmDialog!: ConfirmDialogComponent;
 
   products = signal<Product[]>([]);
@@ -25,6 +27,8 @@ export class ProductListComponent implements OnInit {
 
   searchQuery = signal('');
   statusFilter = signal<'' | '0' | '1'>('');
+  // 👁️ Feature "Voir Produits" : Signal yched l'ID mta3 el catégorie mfiltrée (null ken n7ebbou nchoufou kol chay)
+  categoryFilter = signal<number | null>(null);
   currentPage = signal(1);
   limit = signal(10);
 
@@ -41,8 +45,17 @@ export class ProductListComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.loadProducts();
-    this.loadStats();
+    // 👁️ Feature "Voir Produits" : Kol ma yetbadal el URL (ex: ?category_id=5), na9raw l'ID w nchargiw les produits mte3ha
+    this.route.queryParams.subscribe(params => {
+      if (params['category_id']) {
+        this.categoryFilter.set(Number(params['category_id']));
+      } else {
+        this.categoryFilter.set(null);
+      }
+      this.currentPage.set(1);
+      this.loadProducts();
+      this.loadStats();
+    });
   }
 
   loadProducts() {
@@ -54,6 +67,8 @@ export class ProductListComponent implements OnInit {
     };
     if (this.searchQuery()) filters.search = this.searchQuery();
     if (this.statusFilter() !== '') filters.is_active = Number(this.statusFilter()) as 0 | 1;
+    // 👁️ Feature "Voir Produits" : Nab3thou category_id lel Service ken mseleksyonya
+    if (this.categoryFilter()) filters.category_id = this.categoryFilter()!;
 
     this.productService.getAll(filters).subscribe({
       next: (res) => {
@@ -93,6 +108,12 @@ export class ProductListComponent implements OnInit {
     this.statusFilter.set(value);
     this.currentPage.set(1);
     this.loadProducts();
+  }
+
+  // 👁️ Feature "Voir Produits" : Bouton ✕ bch nna7iw el filtre w narj3ou nchoufou les produits lkol
+  clearCategoryFilter() {
+    this.categoryFilter.set(null);
+    this.router.navigate(['/products']);
   }
 
   goToPage(page: number) {

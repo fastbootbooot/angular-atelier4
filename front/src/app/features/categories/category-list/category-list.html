@@ -1,0 +1,89 @@
+<!-- ======================================================================= -->
+<!-- Task B.5 : Navigation globale (Lien bch netna9lou bin Produits w Catégories) -->
+<!-- ======================================================================= -->
+<nav class="navbar">
+  <a routerLink="/products" class="brand">ShopAdmin</a>
+  <div class="links">
+    <a routerLink="/products">Produits</a>
+    <a routerLink="/categories" class="active">Catégories</a>
+  </div>
+</nav>
+
+<div class="container">
+  <!-- Task B.3 : Titre avec le total (Signal Computed) -->
+  <h2>Gestion des Catégories ({{ total() }})</h2>
+
+  <!-- ======================================================================= -->
+  <!-- Phase C.3 : Recherche en temps réel (Signal searchTerm)                 -->
+  <!-- ======================================================================= -->
+  <div class="search-box">
+    <input 
+      type="text" 
+      placeholder=" Rechercher une catégorie..." 
+      [value]="searchTerm()" 
+      (input)="searchTerm.set($any($event.target).value)" 
+    />
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- Task B.3 : Formulaire d'ajout rapide (input #nomInput + bouton)          -->
+  <!-- ======================================================================= -->
+  <div class="add-form">
+    <input 
+      #nomInput 
+      type="text" 
+      placeholder="Nom de la catégorie..." 
+      (keyup.enter)="add(nomInput.value); nomInput.value = ''" 
+    />
+    <button (click)="add(nomInput.value); nomInput.value = ''">+ Ajouter</button>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- Task B.3 : Tableau des catégories                                       -->
+  <!-- + Phase C.1 : Compteur de produits associés                             -->
+  <!-- ======================================================================= -->
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 80px;">ID</th>
+        <th>Nom de la catégorie</th>
+        <!-- Phase C.1 : Colonne nombre de produits -->
+        <th style="width: 140px; text-align: center;">Nb Produits</th>
+        <th style="width: 180px; text-align: center;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Ydour 3al catégories elli tfiltrat b searchTerm (Phase C.3) -->
+      @for (cat of filteredCategories(); track cat.id) {
+        <tr>
+          <td>#{{ cat.id }}</td>
+          <td><strong>{{ cat.name }}</strong></td>
+          <!-- Phase C.1 : Affichage du nombre de produits -->
+          <td style="text-align: center;">
+            <span class="badge-count">{{ cat.products_count ?? 0 }} produit(s)</span>
+          </td>
+          <!-- Task B.3 : Actions Modifier w Supprimer -->
+          <!-- 👁️ Feature "Voir Produits" : Lien routerLink yhez l /products?category_id=X -->
+          <td style="text-align: center;">
+            <a [routerLink]="['/products']" [queryParams]="{ category_id: cat.id }" class="btn-view" title="Voir les produits de cette catégorie">👁️ Produits</a>
+            <button class="btn-edit" (click)="edit(cat)">Modifier</button>
+            <button class="btn-del" (click)="delete(cat)">Supprimer</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="4" style="text-align: center; color: #999; padding: 18px;">
+            @if (searchTerm()) {
+              Aucune catégorie trouvée pour « {{ searchTerm() }} ».
+            } @else {
+              Aucune catégorie enregistrée.
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Task B.3 : Boite de confirmation mta3 el suppression -->
+<app-confirm-dialog #confirmDialog></app-confirm-dialog>

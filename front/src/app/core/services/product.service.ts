@@ -14,6 +14,7 @@ export class ProductService {
       .set('limit', filters.limit.toString());
     if (filters.search) params = params.set('search', filters.search);
     if (filters.is_active !== undefined) params = params.set('is_active', filters.is_active.toString());
+    // 👁️ Feature "Voir Produits" : Ken famma category_id nzidouh fel URL params (/api/products?category_id=X)
     if (filters.category_id !== undefined) params = params.set('category_id', filters.category_id.toString());
     return this.http.get<ProductListResponse>(this.baseUrl, { params });
   }

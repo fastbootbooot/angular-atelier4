@@ -10,6 +10,7 @@
   </a>
   <div class="navbar-links">
     <a routerLink="/products" class="nav-link active">Produits</a>
+    <a routerLink="/categories" class="nav-link">Catégories</a>
   </div>
 </nav>
 
@@ -55,6 +56,14 @@
       <button class="filter-tab" [class.active]="statusFilter() === '0'" (click)="onStatusFilter('0')">Inactifs</button>
     </div>
   </div>
+
+  <!-- 👁️ Feature "Voir Produits" : Badge ydhahar el filtre par catégorie m3a bouton ✕ bch tna7ih -->
+  @if (categoryFilter()) {
+    <div style="margin: -8px 0 16px; display: inline-flex; align-items: center; gap: 8px; background: #e0e7ff; color: #3730a3; padding: 6px 14px; border-radius: 20px; font-size: 0.88rem; font-weight: 500;">
+      <span>🏷️ Filtré par Catégorie #{{ categoryFilter() }}</span>
+      <button type="button" (click)="clearCategoryFilter()" style="background: none; border: none; cursor: pointer; color: #4338ca; font-weight: bold; margin-left: 4px;" title="Afficher tous les produits">✕ Effacer</button>
+    </div>
+  }
 
   <!-- Loading -->
   @if (loading()) {

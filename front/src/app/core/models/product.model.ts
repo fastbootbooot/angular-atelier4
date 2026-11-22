@@ -34,5 +34,6 @@ export interface ProductFilters {
   limit: number;
   search?: string;
   is_active?: 0 | 1;
-  category_id?: number; // Filtre par catégorie
+  // 👁️ Feature "Voir Produits" : Filtre bel catégorie_id ki njiw mel category-list
+  category_id?: number;
 }
