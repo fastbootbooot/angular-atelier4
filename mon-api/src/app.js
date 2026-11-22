@@ -8,6 +8,11 @@ require('./config/db');
 
 const productRoutes = require('./routes/product.routes');
 
+// ============================================================================
+// PHASE A - Task A.5 : Enregistrement mta3 categoryRoutes
+// ============================================================================
+const categoryRoutes = require('./routes/category.routes');
+
 const app = express();
 
 // ── Security ───────────────────────────────────────────────────────────────
@@ -37,18 +42,21 @@ app.get('/health', (req, res) => {
 // ── API Routes ─────────────────────────────────────────────────────────────
 app.use('/api/products', productRoutes);
 
+// Task A.5 : N9olou l Express ay requête tabda b /api/categories 3addiha l categoryRoutes
+app.use('/api/categories', categoryRoutes);
+
 // ── 404 Handler ────────────────────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).json({ success: false, message: `Route ${req.method} ${req.originalUrl} not found` });
 });
 
-// ── Global Error Handler ───────────────────────────────────────────────────
+// ── Global Error Handler (Task A.6 : Gestion des erreurs & Doublons 409) ────
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   console.error('❌ Error:', err);
 
-  // Handle MySQL duplicate entry
+  // Task A.6 : Handle MySQL duplicate entry (409 Conflict)
   if (err.code === 'ER_DUP_ENTRY') {
-    return res.status(409).json({ success: false, message: 'Duplicate entry: a record with this value already exists.' });
+    return res.status(409).json({ success: false, message: 'Duplicate entry: une catégorie avec ce nom existe déjà.' });
   }
 
   // Handle MySQL FK constraint
